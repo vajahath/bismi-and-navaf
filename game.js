@@ -244,8 +244,7 @@ function updateSoundButton() {
 }
 async function start() {
   unlockAudio();
-  try { await Promise.all([jungle.decode(),couple.decode(),MemoryGallery.ready]); }
-  catch { $('#start').textContent='Artwork didn’t load. Tap to try again.';return; }
+  if(!assetsReady)return;
   elapsed=0;age=0;camera=0;cleared=0;photoHintShown=false;gamePace=targetPace();queuedTap=false;particles=[];progressPercent=-1;
   const releaseHand=handOffset(selected,-1.35);
   launchX=Math.max(72,anchorX()-80);launchRoseX=launchX+releaseHand.x;
@@ -341,3 +340,22 @@ addEventListener('keydown',event=>{if(event.code==='Escape'){mode==='paused'?res
 document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();ForestAudio.sync(soundEnabled&&!document.hidden&&mode!=='paused');if(!document.hidden)wake();});
 jungle.onload=()=>{cacheForest();resize();};couple.onload=render;addEventListener('resize',resize);resize();wake();
 if(document.modelContext?.registerTool){try{Promise.resolve(document.modelContext.registerTool({name:'start_flower_journey',description:'Select the bride or groom and start a new rose flight.',inputSchema:{type:'object',properties:{character:{type:'string',enum:['bride','groom']}},required:['character'],additionalProperties:false},annotations:{readOnlyHint:false},async execute(input){selectCharacter(input?.character);await start();return{character:selected,state:mode};}})).catch(()=>{});}catch{}}
+
+let assetsReady=false, loadingAssets=false;
+async function prepareGame(retry=false){
+  if(loadingAssets)return;
+  loadingAssets=true;
+  $('#load-retry').hidden=true;
+  $('#load-message').textContent='Gathering flowers and memories…';
+  try {
+    if(retry){jungle.src='assets/jungle.png?retry='+Date.now();couple.src='assets/couple-sprites.png?retry='+Date.now();}
+    await Promise.all([jungle.decode(),couple.decode(),MemoryGallery.ready]);
+    cacheForest();resize();assetsReady=true;
+    $('#loading').hidden=true;$('#app').inert=false;$('#start').disabled=false;
+  } catch {
+    $('#load-message').textContent='The forest couldn’t load. Check your connection and try again.';
+    $('#load-retry').hidden=false;
+  } finally {loadingAssets=false;}
+}
+$('#load-retry').addEventListener('click',()=>prepareGame(true));
+prepareGame();

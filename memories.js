@@ -1,15 +1,9 @@
-// Replace src with a local image path, e.g. 'assets/memories/01.jpg'.
-// Empty or unavailable images keep their illustrated placeholders.
-const MEMORY_PHOTOS = Array.from({length:15}, (_,index) => ({
-  id:index+1, src:'', caption:`Memory ${String(index+1).padStart(2,'0')}`
-}));
 const MemoryGallery = (() => {
   const images = new Map(), cards = new Map();
-  const ready = Promise.all(MEMORY_PHOTOS.filter(photo=>photo.src).map(photo=>new Promise(resolve=>{
-    const image = new Image();const timeout=setTimeout(resolve,4500);
-    image.onload=()=>{images.set(photo.id,image);cards.clear();clearTimeout(timeout);resolve();};
-    image.onerror=()=>{clearTimeout(timeout);resolve();};image.src=photo.src;
-  })));
+  const ready = Promise.all(MEMORY_PHOTOS.filter(photo=>photo.src).map(async photo=>{
+    const image = new Image();image.src=photo.src;
+    try {await image.decode();images.set(photo.id,image);} catch { /* Keep the placeholder. */ }
+  }));
   function card(id,solid=false) {
     const key=`${id}-${solid}`;if(cards.has(key))return cards.get(key);
     const photo=MEMORY_PHOTOS.find(photo=>photo.id===id);
