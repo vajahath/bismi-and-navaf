@@ -10,7 +10,7 @@ Example:
 { id: 1, src: "assets/memories/beach.jpg", caption: "Our beach day" },
 ```
 
-Keep captions short (about 25 characters). Photos are cropped to a nearly square frame; keep faces near the centre. Aim for images around 1000 pixels wide and under 500 KB for quick mobile loading. Empty or missing images keep the illustrated placeholder. Slots 6 and 11 are obstacle frames. Parallax can briefly show neighbouring memories together.
+Keep captions short (about 25 characters). Portrait, landscape and square photos keep their original proportions. The game sizes each frame automatically once the photo loads; no cropping or manual dimensions are needed. Aim for images around 1000 pixels wide and under 500 KB for quick mobile loading. Empty or missing images keep the illustrated placeholder. Slots 6 and 11 are obstacle frames. Parallax can briefly show neighbouring memories together.
 
 Commit and push to `main` to update the live game. This repository and its photos are public.
 
