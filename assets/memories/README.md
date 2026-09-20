@@ -13,3 +13,5 @@ Example:
 Keep captions short (about 25 characters). Photos are cropped to a nearly square frame; keep faces near the centre. Aim for images around 1000 pixels wide and under 500 KB for quick mobile loading. Empty or missing images keep the illustrated placeholder. Slots 6 and 11 are obstacle frames. Parallax can briefly show neighbouring memories together.
 
 Commit and push to `main` to update the live game. This repository and its photos are public.
+
+The same photos and captions appear automatically in the celebration gallery after the game. The gallery shows the full image without cropping.

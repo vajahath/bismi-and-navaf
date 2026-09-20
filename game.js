@@ -294,7 +294,7 @@ function step(dt) {
     if(distance>=END){arrivalStart={x:rose.x,y:rose.y};setMode('arrival');elapsed=0;showHint('Right where it belongs.',5);}
   } else if(mode==='arrival') {
     const t=ease(elapsed/1.65);rose.x=arrivalStart.x+87*t;rose.y=arrivalStart.y+(402-arrivalStart.y)*t;
-    if(elapsed>=2.15){setMode('finish');$('#finish-copy').textContent='Eight little challenges. One beautiful beginning.';[523,659,784].forEach((note,i)=>setTimeout(()=>tone(note,.5,.03),i*150));$('#again').focus();}
+    if(elapsed>=2.15){mode='finish';ForestAudio.sync(false);location.assign('gallery.html');}
   } else if(mode==='crash'&&elapsed>=.45){setMode('gameover');$('#retry').focus();}
   for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=40*dt;p.life-=dt;if(p.life<=0)particles.splice(i,1);}
 }
